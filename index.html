@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Shoe Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, #34ebba, #9d34eb, #34ebc0, #5a34eb);
+            background-size: 400% 400%;
+            animation: gradientBackground 15s ease infinite;
+            color: white;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h1 {
+            margin-top: 50px;
+            font-size: 2.5em;
+        }
+
+        .content {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .content button {
+            padding: 15px 30px;
+            margin: 20px 0;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+            background: #5a34eb;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .content button:hover {
+            background: #34ebba;
+            transform: scale(1.1);
+        }
+
+        .content p {
+            font-size: 1.2em;
+            font-weight: 300;
+        }
+
+        .emoji-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .emoji {
+            position: absolute;
+            font-size: 2em;
+            animation: floatEmoji 8s infinite;
+        }
+
+        @keyframes floatEmoji {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+
+        .emoji:nth-child(1) { left: 20%; animation-delay: 0s; }
+        .emoji:nth-child(2) { left: 40%; animation-delay: 1s; }
+        .emoji:nth-child(3) { left: 60%; animation-delay: 2s; }
+        .emoji:nth-child(4) { left: 80%; animation-delay: 3s; }
+        .emoji:nth-child(5) { left: 90%; animation-delay: 4s; }
+    </style>
+</head>
+<body>
+    <div class="emoji-container">
+        <span class="emoji">👟</span>
+        <span class="emoji">👠</span>
+        <span class="emoji">🥾</span>
+        <span class="emoji">🥿</span>
+        <span class="emoji">👡</span>
+    </div>
+
+    <h1>Welcome to the Shoe Assistant</h1>
+    <div class="content">
+        <button id="speechBtn"><i class="fas fa-microphone"></i> Click to Speak</button>
+        <p id="result">Your answer will appear here.</p>
+    </div>
+
+    <script>
+        // Get the button and result display
+        const speechBtn = document.getElementById('speechBtn');
+        const resultDisplay = document.getElementById('result');
+
+        // Start listening for voice input
+        speechBtn.addEventListener('click', async function () {
+            resultDisplay.innerText = "Listening...";
+            const response = await fetch('http://127.0.0.1:5000/voice', { method: 'GET' });
+            const data = await response.json();
+
+            if (data.shoe_type) {
+                resultDisplay.innerText = `Answer: ${data.shoe_type}`;
+            } else if (data.error) {
+                resultDisplay.innerText = `Error: ${data.error}`;
+            }
+        });
+    </script>
+</body>
+</html>
