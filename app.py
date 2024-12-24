@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-
+#testing
 model = joblib.load('models/shoe_type_model.pkl')
 vectorizer = joblib.load('models/question_vectorizer.pkl')
 qa_data = pd.read_csv('question_answer.csv')
